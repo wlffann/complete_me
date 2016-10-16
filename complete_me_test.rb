@@ -1,6 +1,7 @@
 gem 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'pry'
 require_relative 'complete_me'
 
 class CompleteMeTest < Minitest::Test
@@ -11,11 +12,19 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_class_exists
-    skip
+    assert trie
   end
 
   def test_insert_blank_item
-    skip
+    trie.insert("pizza")
+    # binding.pry
+    assert_equal 1, trie.count
+  end
+
+  def test_it_inserts_a_different_word
+    trie.insert("cat")
+    binding.pry
+    assert_equal 1, trie.count
   end
 
   def test_insert_one_item
