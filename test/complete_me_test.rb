@@ -2,6 +2,8 @@ gem 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
+require 'simplecov'
+SimpleCov.start
 require_relative '../lib/complete_me'
 
 class CompleteMeTest < Minitest::Test
@@ -81,7 +83,9 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_populates_multiple_words
-
+    trie.populate("words")
+    binding.pry
+    assert_equal ["a", "b"], trie.base_node.links.keys
   end
 
 end

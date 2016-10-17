@@ -39,7 +39,10 @@ class Trie
   end
 
   def populate(file_path)
-    words = readfile(file_path)
+    words = read_file(file_path)
+    words.each do |word|
+      insert(word)
+    end
   end
 
   def read_file(file_path)
