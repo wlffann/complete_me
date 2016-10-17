@@ -10,18 +10,41 @@ class Trie
   end
 
   def insert(word)
-      if base_node.links != ({})
-        if base_node.links[word.chars.first]
-          base_node.walk(word)
-        else 
-          base_node.links[word.chars.first] = Node.new
-          base_node.links.values.last.insert_node(word)
-        end
+      if has_links? && base_node.links[pull_first_letter(word)]
+        base_node.walk(word)
+      elsif has_links?
+        create_node_at_letter_link(word)
+        nodes_link_to_base.last.insert_node(word)
       else
-        base_node.links[word.chars.first] = Node.new
-        base_node.links.values.first.insert_node(word)
+        create_node_at_letter_link(word)
+        nodes_link_to_base.first.insert_node(word)
       end
       @count += 1
   end
-end
 
+  def has_links?
+    base_node.links != ({})
+  end
+
+  def create_node_at_letter_link(word)
+    base_node.links[pull_first_letter(word)] = Node.new
+  end
+
+  def pull_first_letter(word)
+    word.chars.first
+  end
+
+  def nodes_link_to_base
+    base_node.links.values
+  end
+
+  def populate(file_path)
+    words = readfile(file_path)
+  end
+
+  def read_file(file_path)
+    File.readlines(file_path).map do |word|
+      word.chomp
+    end
+  end
+end

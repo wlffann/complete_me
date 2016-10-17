@@ -71,10 +71,17 @@ class CompleteMeTest < Minitest::Test
   def test_it_knows_my_name
     trie.insert("ann")
     trie.insert("annie")
-
-    binding.pry
     assert_equal 2, trie.count
     assert_equal ["a"], trie.base_node.links.keys
+  end
+
+  def test_read_file_method
+    result = trie.read_file('words')
+    assert_equal ["aa", "aardvark", "animal", "antique", "bear"], result
+  end
+
+  def test_it_populates_multiple_words
+
   end
 
 end

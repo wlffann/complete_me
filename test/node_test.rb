@@ -15,7 +15,7 @@ class NodeTest < Minitest::Test
   def test_it_exsists
     assert node
   end
-  
+
   def test_its_links_are_empty_hash
     assert_equal({}, node.links)
   end
@@ -27,7 +27,21 @@ class NodeTest < Minitest::Test
 
   def test_it_deletes_first_words
     result = node.delete_letter("pizza")
-    assert_equal "izza", result 
+    assert_equal "izza", result
+  end
+
+  def test_word_walks_down_tree
+    node.insert_node("pizza")
+    node.insert_node("pp")
+    # binding.pry
+    result = node.walk("izzeria")
+    assert_equal true, result
+  end
+
+  def test_it_can_return_a_word
+    skip
+    result = node.collect_words("iz")
+    assert_equals ["izza", "izzeria"], result
   end
 
 end
