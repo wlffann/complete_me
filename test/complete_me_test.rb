@@ -16,9 +16,11 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_insert_blank_item
+    skip
     trie.insert("pizza")
     #  binding.pry
     assert_equal 1, trie.count
+    assert_equal ["p"], trie.base_node.links.keys
   end
 
   def test_it_inserts_a_different_word
@@ -26,15 +28,16 @@ class CompleteMeTest < Minitest::Test
     trie.insert("cat")
     # binding.pry
     assert_equal 1, trie.count
+    assert_equal ["c"], trie.base_node.links.keys
   end
 
   def test_it_inserts_a_second_time_without_losing_first_word
     skip
     trie.insert("catty")
     trie.insert("cat")
-    
-    # binding.pry
+
     assert_equal 2, trie.count
+    assert_equal ["c"], trie.base_node.links.keys
   end
 
   def test_it_inserts_two_different_words_begining_different_letter
@@ -52,7 +55,6 @@ class CompleteMeTest < Minitest::Test
     trie.insert("pizza")
     trie.insert("horse")
 
-    # binding.pry
     assert_equal 3, trie.count
     assert_equal ["c", "p", "h"], trie.base_node.links.keys
   end
@@ -61,8 +63,18 @@ class CompleteMeTest < Minitest::Test
     # skip
     trie.insert("pizza")
     trie.insert("pizzeria")
+
+    assert_equal 2, trie.count
+    assert_equal ["p"], trie.base_node.links.keys
+  end
+
+  def test_it_knows_my_name
+    trie.insert("ann")
+    trie.insert("annie")
+
     binding.pry
     assert_equal 2, trie.count
+    assert_equal ["a"], trie.base_node.links.keys
   end
 
 end
