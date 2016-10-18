@@ -9,11 +9,23 @@ class Node
   def insert_node(word)
     word = delete_letter(word)
     if word == ""
-      @terminator = true
+      end_word
     else
-      links[pull_first_letter(word)] = Node.new
-      links[pull_first_letter(word)].insert_node(word)
+      assign_new_link_at_first_letter_of(word)
     end
+  end
+
+  def link_at_first_letter_of(word)
+    links[pull_first_letter(word)]
+  end
+
+  def assign_new_link_at_first_letter_of(word)
+    links[pull_first_letter(word)] = Node.new
+    link_at_first_letter_of(word).insert_node(word)
+  end
+
+  def end_word
+    @terminator = true
   end
 
   def walk(word)
@@ -34,27 +46,28 @@ class Node
     else
       collect_letters(suffix)
     end
-
-  def collect_letters(suffix)
-    suffixs = []
-    #go down into each available
-      until self.links == ({}) #at the end of the line
-        letters = []
-        # as it moves, saves the link's letter
-        if terminator == true && self.links != ({}) #if it is the end of the word AND there are more links
-          suffixs << letters.join
-        elsif terminator == true && self.links == ({})
-            suffixs << letter.join
-            # else continue down until term == true && mo more links
-        else #terminator == false
-          #keep going
-        end
-      end
-    end
   end
 
-  suffixs = []
-  letters = []
+  # def collect_letters(suffix)
+  #   suffixs = []
+  #   #go down into each available
+  #     until self.links == ({}) #at the end of the line
+  #       letters = []
+  #       # as it moves, saves the link's letter
+  #       if terminator == true && self.links != ({}) #if it is the end of the word AND there are more links
+  #         suffixs << letters.join
+  #       elsif terminator == true && self.links == ({})
+  #           suffixs << letter.join
+  #           # else continue down until term == true && mo more links
+  #       else #terminator == false
+  #         #keep going
+  #       end
+  #     end
+  #   end
+  # end
+
+  # suffixs = []
+  # letters = []
 
   def check_letters_for_links(suffixs, letters)
     available_letters = self.links.keys
@@ -65,7 +78,7 @@ class Node
         self.links[letter].check_letters_for_links(suffixs, letters)
         # binding.pry
       else
-        binding.pry
+        # binding.pry
         suffixs << letters.join
       end
     end
