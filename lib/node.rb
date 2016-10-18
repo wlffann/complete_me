@@ -8,11 +8,15 @@ class Node
 
   def insert_node(word)
     word = delete_letter(word)
-    if word == ""
+    if empty?(word)
       end_word
     else
       assign_new_link_at_first_letter_of(word)
     end
+  end
+
+  def empty?(word)
+    word == ""
   end
 
   def link_at_first_letter_of(word)
@@ -32,17 +36,24 @@ class Node
     # binding.pry
     current = set_current_node(word)
     word = delete_letter(word)
-    if current.links != nil && current.links[pull_first_letter(word)]
+    if keep_going?
       current.walk(word)
     else
-      create_new_node_if_still_word(word)
+      pass_word_to_next_method(word)
     end
   end
 
-  def create_new_node_if_still_word(suffix)
-    if suffix != ""
-      current.links[pull_first_letter(suffix)] = Node.new
-      current.links[pull_first_letter(suffix)].insert_node(word)
+  def has_links?
+    self.links != ({})
+  end
+
+  def keep_going?
+    current.has_links? && current.link_at_first_letter_of(word)
+  end
+
+  def pass_word_to_next_method(suffix)
+    if empty?(suffix)
+      current.assign_new_link_at_first_letter_of(word)
     else
       collect_letters(suffix)
     end

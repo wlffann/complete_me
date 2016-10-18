@@ -74,4 +74,12 @@ class NodeTest < Minitest::Test
     assert_equal true, node.terminator
   end
 
+  def test_a_node_has_links
+    # skip
+    node.assign_new_link_at_first_letter_of("sam")
+    result = node.has_links?
+
+    assert_equal true, result
+  end
+
 end
