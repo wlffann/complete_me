@@ -1,10 +1,12 @@
-gem 'minitest'
+require 'simplecov'
+SimpleCov. start do 
+  add_filter 'test'
+end
+
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
-require 'simplecov'
-SimpleCov.start
-require_relative '../lib/complete_me'
+require './lib/complete_me'
 
 class CompleteMeTest < Minitest::Test
   attr_reader :trie
@@ -62,7 +64,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_insert_a_second_item
-    # skip
+    skip
     trie.insert("pizza")
     trie.insert("pizzeria")
 
@@ -71,25 +73,41 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_knows_my_name
+    skip
     trie.insert("ann")
     trie.insert("annie")
+    # binding.pry
     assert_equal 2, trie.count
     assert_equal ["a"], trie.base_node.links.keys
   end
 
   def test_read_file_method
-    result = trie.read_file('words')
+    skip
+    result = trie.read_file('./test/words_1')
     assert_equal ["aa", "aardvark", "animal", "antique", "bear"], result
   end
 
   def test_it_populates_multiple_words
-    trie.populate("words")
+    # skip
+    trie.populate("./test/words_1")
     binding.pry
     assert_equal ["a", "b"], trie.base_node.links.keys
   end
 
+  def test_it_can_walk_even_with_double_letters
+    trie.insert("bear")
+    trie.insert("beer")
+    trie.insert("bee")
+    
+    result = trie.base_node.links["b"].links["e"].links.keys
+
+    assert_equal ["a", "e"], result
+
+  end
+
   def test_it_returns_words_with_suggest
-    trie.populate("words")
+    skip
+    trie.populate("./test/words")
     result = trie.suggest("be")
     assert_equal ["be", "begin", "bear", "beer"], result
   end

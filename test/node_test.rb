@@ -47,6 +47,8 @@ class NodeTest < Minitest::Test
 
   def test_check_letters_for_links
     node.insert_node("bear")
+    node.walk("ehr")
+    binding.pry
     suffixs = []
     letters = []
     result = node.links["e"].check_letters_for_links(suffixs, letters)
