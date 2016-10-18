@@ -82,4 +82,8 @@ class NodeTest < Minitest::Test
     assert_equal true, result
   end
 
+  def test_set_of_keys_for_links
+    skip
+  end
+
 end

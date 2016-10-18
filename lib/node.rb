@@ -33,7 +33,6 @@ class Node
   end
 
   def walk(word)
-    # binding.pry
     current = set_current_node(word)
     word = delete_letter(word)
     if keep_going?
@@ -82,14 +81,11 @@ class Node
 
   def check_letters_for_links(suffixs, letters)
     available_letters = self.links.keys
-    # binding.pry
     available_letters.each do |letter|
       letters << letter
-      if self.links[letter].links != ({})
+      if self.links[letter].has_links?
         self.links[letter].check_letters_for_links(suffixs, letters)
-        # binding.pry
       else
-        # binding.pry
         suffixs << letters.join
       end
     end
