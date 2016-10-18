@@ -50,4 +50,10 @@ class Trie
       word.chomp
     end
   end
+
+  def suggest(stem)
+    # move down the tree to the end of the stem we gave it
+    walk(stem)
+          # return suggest's array
+  end
 end
