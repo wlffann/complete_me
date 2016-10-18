@@ -50,7 +50,40 @@ class NodeTest < Minitest::Test
     suffixs = []
     letters = []
     result = node.links["e"].check_letters_for_links(suffixs, letters)
+    
     assert_equal ["ar"], result
+  end
+
+  def test_it_finds_link_at_certain_letter
+    node.insert_node("pizza")
+    result = node.link_at_first_letter_of("izza").links.keys
+
+    assert_equal ["z"], result
+  end
+
+  def test_it_assigns_new_links_when_told
+    node.assign_new_link_at_first_letter_of("pizza")
+    result = node.link_at_first_letter_of("pizza").links.keys
+
+    assert_equal ["i"], result
+  end
+
+  def test_ending_words
+    node.end_word
+
+    assert_equal true, node.terminator
+  end
+
+  def test_a_node_has_links
+    # skip
+    node.assign_new_link_at_first_letter_of("sam")
+    result = node.has_links?
+
+    assert_equal true, result
+  end
+
+  def test_set_of_keys_for_links
+    skip
   end
 
 end
