@@ -1,4 +1,4 @@
-require_relative 'node'
+require './lib/node'
 
 class Trie
   attr_reader :base_node,
@@ -10,20 +10,21 @@ class Trie
   end
 
   def insert(word)
-      if has_links? && base_node.links[pull_first_letter(word)]
-        base_node.walk(word)
-      elsif has_links?
-        create_node_at_letter_link(word)
-        nodes_link_to_base.last.insert_node(word)
-      else
-        create_node_at_letter_link(word)
-        nodes_link_to_base.first.insert_node(word)
-      end
-      @count += 1
+    if base_node.has_links? && base_node.links[pull_first_letter(word)] != nil
+      # binding.pry
+      base_node.walk(word)
+    elsif base_node.has_links?
+      create_node_at_letter_link(word)
+      nodes_link_to_base.last.insert_node(word)
+    else
+      create_node_at_letter_link(word)
+      nodes_link_to_base.first.insert_node(word)
+    end
+    @count += 1
   end
 
   def has_links?
-    base_node.links != ({})
+    links != ({})
   end
 
   def create_node_at_letter_link(word)
@@ -41,6 +42,7 @@ class Trie
   def populate(file_path)
     words = read_file(file_path)
     words.each do |word|
+      word = word.downcase
       insert(word)
     end
   end
@@ -52,8 +54,7 @@ class Trie
   end
 
   def suggest(stem)
-    # move down the tree to the end of the stem we gave it
     walk(stem)
-          # return suggest's array
+      # return suggest's array
   end
 end
