@@ -31,6 +31,7 @@ class NodeTest < Minitest::Test
   end
 
   def test_word_walks_down_tree
+    skip
     node.insert_node("pizza")
     node.insert_node("pp")
     # binding.pry
@@ -42,6 +43,14 @@ class NodeTest < Minitest::Test
     skip
     result = node.collect_words("iz")
     assert_equals ["izza", "izzeria"], result
+  end
+
+  def test_check_letters_for_links
+    node.insert_node("bear")
+    suffixs = []
+    letters = []
+    result = node.links["e"].check_letters_for_links(suffixs, letters)
+    assert_equal ["ar"], result
   end
 
 end

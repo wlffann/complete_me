@@ -88,4 +88,10 @@ class CompleteMeTest < Minitest::Test
     assert_equal ["a", "b"], trie.base_node.links.keys
   end
 
+  def test_it_returns_words_with_suggest
+    trie.populate("words")
+    result = trie.suggest("be")
+    assert_equal ["be", "begin", "bear", "beer"], result
+  end
+
 end
