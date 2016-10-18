@@ -24,6 +24,7 @@ class Node
   end
 
   def assign_new_link_at_first_letter_of(word)
+    # binding.pry
     links[pull_first_letter(word)] = Node.new
     links[pull_first_letter(word)].insert_node(word)
   end
@@ -39,17 +40,17 @@ class Node
 
   def walk(word)
     current = set_current_node(word)
+    saved = pull_first_letter(word)
     word = delete_letter(word)
     # binding.pry
     if current.has_links? && current.link_at_first_letter_of(word) != nil
       current.walk(word)
     else
-      pass_word_to_next_method(word)
+      pass_word_to_next_method(word, saved)
     end
   end
 
   def set_current_node(word)
-    # binding.pry
     self.links[pull_first_letter(word)]
   end
 
@@ -57,7 +58,8 @@ class Node
     links != ({})
   end
 
-  def pass_word_to_next_method(suffix)
+  def pass_word_to_next_method(suffix, saved)
+    #  binding.pry
     if empty?(suffix)
       suffixs = []
       letters = []
@@ -65,7 +67,7 @@ class Node
     elsif self.links[pull_first_letter(suffix)] != nil
       self.assign_new_link_at_lower_level(suffix)
     else
-      self.assign_new_link_at_first_letter_of(suffix)
+      self.links[saved].assign_new_link_at_first_letter_of(suffix)
     end
   end
 

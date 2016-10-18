@@ -10,16 +10,17 @@ class Trie
   end
 
   def insert(word)
-      if base_node.links != ({}) && base_node.links[pull_first_letter(word)]
-        base_node.walk(word)
-      elsif base_node != ({})
-        create_node_at_letter_link(word)
-        nodes_link_to_base.last.insert_node(word)
-      else
-        create_node_at_letter_link(word)
-        nodes_link_to_base.first.insert_node(word)
-      end
-      @count += 1
+    if base_node.has_links? && base_node.links[pull_first_letter(word)] != nil
+      # binding.pry
+      base_node.walk(word)
+    elsif base_node.has_links?
+      create_node_at_letter_link(word)
+      nodes_link_to_base.last.insert_node(word)
+    else
+      create_node_at_letter_link(word)
+      nodes_link_to_base.first.insert_node(word)
+    end
+    @count += 1
   end
 
   def has_links?

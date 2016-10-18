@@ -34,8 +34,8 @@ class NodeTest < Minitest::Test
     skip
     node.insert_node("pizza")
     node.insert_node("pp")
-    # binding.pry
     result = node.walk("izzeria")
+
     assert_equal true, result
   end
 
@@ -48,7 +48,7 @@ class NodeTest < Minitest::Test
   def test_check_letters_for_links
     node.insert_node("bear")
     node.walk("ehr")
-    binding.pry
+    
     suffixs = []
     letters = []
     result = node.links["e"].check_letters_for_links(suffixs, letters)
@@ -82,10 +82,6 @@ class NodeTest < Minitest::Test
     result = node.has_links?
 
     assert_equal true, result
-  end
-
-  def test_set_of_keys_for_links
-    skip
   end
 
 end
