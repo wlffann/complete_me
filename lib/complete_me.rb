@@ -56,24 +56,40 @@ class Trie
   end
 
   def suggest(stem)
-    # binding.pry
     beginning = stem.dup
     suffixs = base_node.suggestion_walk(stem)
+    # binding.pry
     suggestions = suffixs.map do |suffix|
-      # binding.pry
       beginning + suffix
     end
-    # suggestions = selection_dictionary[stem].suggestions
-    #will be array of arrays, sort by second element, don't display second element
+    combine_arrays(beginning, suggestions)
+  end
+
+  def weight_selections(stem)
+    # binding.pry
+    weighted = selection_dictionary[stem].sort_by {|word, weight| weight} #array of arrays
+    words_only = weighted.map do |word, weight|
+      word
+    end
+    words_only
+  end
+
+  def combine_arrays(stem, suggestions)
+    # binding.pry
+    if selection_dictionary[stem] == nil
+      suggestions
+    else
+      # binding.pry
+    weight_selections(stem) | suggestions
+  end
   end
 
   def select(stem, word)
     if selection_dictionary[stem]
-      # binding.pry
       result = selection_dictionary[stem].find {|stems_values| stems_values[0] == word}
       if result == nil
         selection_dictionary[stem] << [word, 1]
-      else  
+      else
         result[1] += 1
       end
     else

@@ -70,16 +70,14 @@ class Node
   def suggestion_walk(stem)
     current = set_current_node(stem)
     saved = pull_first_letter(stem)
-    # binding.pry
     stem = delete_letter(stem)
+    # binding.pry
     if stem != "" && current.link_at_first_letter_of(stem) != nil
       current.suggestion_walk(stem)
     else
       suffixs = []
       letters = []
-      # binding.pry
       self.links[saved].check_letters_for_links(suffixs, letters)
-      # binding.pry
     end
   end
 
@@ -88,14 +86,18 @@ class Node
     available_letters = self.links.keys
     available_letters.each do |letter|
       letters << letter
-
-      if self.links[letter].has_links?
+    
+      if self.links[letter].terminator == true && self.links[letter].has_links?
+        # # binding.pry
+        suffixs << letters.join
+        # self.links[letter].check_letters_for_links(suffixs, letters)
+        # letters = [letters[0]]
+      elsif self.links[letter].has_links?
         # binding.pry
-        self.links[letter].check_letters_for_links(suffixs, letters)
+        # self.links[letter].check_letters_for_links(suffixs, letters)
       else
         suffixs << letters.join
       end
-      letters = []
     end
     suffixs
   end
