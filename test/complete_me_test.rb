@@ -167,9 +167,73 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_suggest_works_on_double_first_letter
+    skip
     trie.insert("aardvark")
     result = trie.suggest("a")
     assert_equal ["aardvark"], result
   end
+
+  def test_it_creates_dictionary_of_selected_words
+    skip
+    result = trie.selection_dictionary
+    
+    assert_equal ({}), result
+  end
+
+  def test_it_can_add_selection_to_selection_dictionary
+    skip
+    trie.insert("pizza")
+    trie.insert("pizzeria")
+    trie.select("piz", "pizzeria")
+    result = trie.selection_dictionary
+
+    assert_equal ({"piz" => [["pizzeria", 1]]}), result
+  end
+
+  def test_it_can_add_multiple_selections_to_selection_dictionary
+    skip
+    trie.insert("pizza")
+    trie.insert("pizzeria")
+    trie.select("piz", "pizzeria")
+    trie.select("pi", "pizza")
+    result = trie.selection_dictionary
+
+    assert_equal ({"piz" => [["pizzeria", 1]], "pi" => [["pizza", 1]]}), result
+  end
+
+  def test_it_adds_to_counter_when_selection_is_called_again
+    skip
+    trie.insert("pizza")
+    trie.insert("pizzeria")
+    trie.insert("pizzicato")
+    trie.select("piz", "pizzeria")
+    trie.select("piz", "pizzeria")
+    result = trie.selection_dictionary["piz"][0][1]
+
+    assert_equal 2, result
+  end
+
+  def test_it_can_add_selection_when_stem_is_already_there
+    trie.insert("pizza")
+    trie.insert("pizzeria")
+    trie.insert("pizzicato")
+    trie.select("piz", "pizzeria")
+    trie.select("piz", "pizzicato")
+    result = trie.selection_dictionary["piz"]
+
+    assert_equal [["pizzeria", 1], ["pizzicato", 1]], result
+  end
+
+  def test_it_puts_selection_first_when_suggesting
+    skip
+    trie.insert("pizza")
+    trie.insert("pizzeria")
+    trie.insert("pizzaz")
+    trie.select("piz", "pizzeria")
+    result = trie.suggest("piz")
+
+    assert_equal ["pizzeria", "pizza", "pizzaz"], result
+  end
+
 
 end

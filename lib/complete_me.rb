@@ -2,11 +2,13 @@ require './lib/node'
 
 class Trie
   attr_reader :base_node,
-              :count
+              :count,
+              :selection_dictionary
 
   def initialize
     @base_node = Node.new
     @count = 0
+    @selection_dictionary = {}
   end
 
   def insert(word)
@@ -61,7 +63,21 @@ class Trie
       # binding.pry
       beginning + suffix
     end
-    suggestions
+    # suggestions = selection_dictionary[stem].suggestions
     #will be array of arrays, sort by second element, don't display second element
+  end
+
+  def select(stem, word)
+    if selection_dictionary[stem]
+      # binding.pry
+      result = selection_dictionary[stem].find {|stems_values| stems_values[0] == word}
+      if result == nil
+        selection_dictionary[stem] << [word, 1]
+      else  
+        result[1] += 1
+      end
+    else
+      selection_dictionary[stem] = [[word, 1]]
+    end
   end
 end
