@@ -139,18 +139,19 @@ class CompleteMeTest < Minitest::Test
   end
 
    def test_it_can_walk_into_correct_node
-     skip
+
     trie.insert("aa")
     trie.insert("aardvark")
     trie.insert("any")
     trie.insert("animal")
+    # binding.pry
     result = trie.base_node.links["a"].links.keys
     # binding.pry
     assert_equal ["a", "n"], result
   end
 
   def test_suggested_stem_is_not_word
-
+    skip
     trie.insert("be")
     result = trie.suggest("b")
     assert_equal ["be"], result
@@ -180,7 +181,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_can_add_selection_to_selection_dictionary
-    skip
+
     trie.insert("pizza")
     trie.insert("pizzeria")
     trie.select("piz", "pizzeria")
@@ -190,7 +191,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_can_add_multiple_selections_to_selection_dictionary
-    skip
+    # skip
     trie.insert("pizza")
     trie.insert("pizzeria")
     trie.select("piz", "pizzeria")
@@ -235,6 +236,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_substring_selection_matching_markdown
+    # skip
     trie.insert("pizza")
     trie.insert("pizzeria")
     trie.insert("pizzicato")

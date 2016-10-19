@@ -75,31 +75,49 @@ class Node
     if stem != "" && current.link_at_first_letter_of(stem) != nil
       current.suggestion_walk(stem)
     else
-      suffixs = []
-      letters = []
-      self.links[saved].check_letters_for_links(suffixs, letters)
+      suffixs = ""
+      self.links[saved].check_letters_for_links(suffixs)
     end
   end
 
-  def check_letters_for_links(suffixs, letters)
+  def check_letters_for_links(suffixs_mess)
     # binding.pry
     available_letters = self.links.keys
     available_letters.each do |letter|
-      letters << letter
-    
+      suffixs_mess << letter
+
       if self.links[letter].terminator == true && self.links[letter].has_links?
         # # binding.pry
-        suffixs << letters.join
-        # self.links[letter].check_letters_for_links(suffixs, letters)
-        # letters = [letters[0]]
+        suffixs_mess << ","
+        self.links[letter].check_letters_for_links(suffixs_mess)
       elsif self.links[letter].has_links?
-        # binding.pry
-        # self.links[letter].check_letters_for_links(suffixs, letters)
+        self.links[letter].check_letters_for_links(suffixs_mess)
       else
-        suffixs << letters.join
+        suffixs_mess << ";"
       end
     end
-    suffixs
+    binding.pry
+    clean_up(suffixs_mess)
+  end
+
+  def clean_up(suffixs_mess)
+    # binding.pry
+    suffixs_mess = suffixs_mess.split(";")
+    suffixs = suffixs_mess.map do |thingie|
+      thingie.delete(";")
+      if thingie.include?(",")
+        array = thingie.split(",")
+        results = array.map do |thing|
+          binding.pry
+          thing = array[0]
+          #need to make this work here
+        end
+        thingie << results
+      else
+        thingie
+      end
+    end
+    suffixs.flatten
   end
 
   def delete_letter(word)
