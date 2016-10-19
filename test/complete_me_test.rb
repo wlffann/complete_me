@@ -1,5 +1,5 @@
 require 'simplecov'
-SimpleCov. start do 
+SimpleCov. start do
   add_filter 'test'
 end
 
@@ -59,7 +59,7 @@ class CompleteMeTest < Minitest::Test
     skip
     trie.populate('./test/words_1')
     result = trie.count
-    
+
     assert_equal 5, result
   end
 
@@ -104,7 +104,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_populates_multiple_words
-    # skip
+    skip
     trie.populate("./test/words_1")
     # binding.pry
     assert_equal ["a", "b"], trie.base_node.links.keys
@@ -113,7 +113,7 @@ class CompleteMeTest < Minitest::Test
   #testing node behavior through trie
 
   def test_it_can_walk_even_with_double_letters
-    # skip
+    skip
     trie.insert("bear")
     trie.insert("beer")
     trie.insert("bee")
@@ -131,6 +131,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_can_walk_if_two_words_begin_with_double_letters
+    skip
     trie.insert("aa")
     trie.insert("aardvark")
     result = trie.base_node.links["a"].links.keys
@@ -139,21 +140,36 @@ class CompleteMeTest < Minitest::Test
   end
 
    def test_it_can_walk_into_correct_node
+     skip
     trie.insert("aa")
     trie.insert("aardvark")
     trie.insert("any")
     trie.insert("animal")
     result = trie.base_node.links["a"].links.keys
-    binding.pry
-    assert_equal ["a"], result
+    # binding.pry
+    assert_equal ["a", "n"], result
+  end
+
+  def test_suggested_stem_is_not_word
+
+    trie.insert("be")
+    result = trie.suggest("b")
+    assert_equal ["be"], result
   end
 
   def test_it_returns_words_with_suggest
-    skip
+
     trie.populate("./test/words")
+
     result = trie.suggest("be")
 
-    assert_equal ["be", "begin", "bear", "beer"], result
+    assert_equal ["be", "bear", "beer", "begin"], result.sort
+  end
+
+  def test_suggest_works_on_double_first_letter
+    trie.insert("aardvark")
+    result = trie.suggest("a")
+    assert_equal ["aardvark"], result
   end
 
 end

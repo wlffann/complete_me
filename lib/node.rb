@@ -19,10 +19,6 @@ class Node
     word == ""
   end
 
-  def link_at_first_letter_of(word)
-    links[pull_first_letter(word)]
-  end
-
   def assign_new_link_at_first_letter_of(word)
     # binding.pry
     links[pull_first_letter(word)] = Node.new
@@ -31,6 +27,7 @@ class Node
 
   def assign_new_link_at_lower_level(word)
     # binding.pry
+    link_corresponding_to_first_lettter = self.links[pull_first_letter(word)]
     self.links[pull_first_letter(word)].assign_new_link_at_first_letter_of(word)
   end
 
@@ -42,7 +39,6 @@ class Node
     current = set_current_node(word)
     saved = pull_first_letter(word)
     word = delete_letter(word)
-    # binding.pry
     if current.has_links? && current.link_at_first_letter_of(word) != nil
       current.walk(word)
     else
@@ -58,28 +54,48 @@ class Node
     links != ({})
   end
 
-  def pass_word_to_next_method(suffix, saved)
-    #  binding.pry
-    if empty?(suffix)
+  def link_at_first_letter_of(word)
+    links[pull_first_letter(word)]
+  end
+
+  def pass_word_to_next_method(word, saved)
+    if self.links[pull_first_letter(word)] != nil
+      self.assign_new_link_at_lower_level(word)
+    else
+      self.links[saved].assign_new_link_at_first_letter_of(word)
+    end
+  end
+
+## suggest section
+  def suggestion_walk(stem)
+    current = set_current_node(stem)
+    saved = pull_first_letter(stem)
+    # binding.pry
+    stem = delete_letter(stem)
+    if stem != "" && current.link_at_first_letter_of(stem) != nil
+      current.suggestion_walk(stem)
+    else
       suffixs = []
       letters = []
-      check_letters_for_links(suffixs, letters)
-    elsif self.links[pull_first_letter(suffix)] != nil
-      self.assign_new_link_at_lower_level(suffix)
-    else
-      self.links[saved].assign_new_link_at_first_letter_of(suffix)
+      # binding.pry
+      self.links[saved].check_letters_for_links(suffixs, letters)
+      # binding.pry
     end
   end
 
   def check_letters_for_links(suffixs, letters)
+    # binding.pry
     available_letters = self.links.keys
     available_letters.each do |letter|
       letters << letter
+
       if self.links[letter].has_links?
+        # binding.pry
         self.links[letter].check_letters_for_links(suffixs, letters)
       else
         suffixs << letters.join
       end
+      letters = []
     end
     suffixs
   end

@@ -48,12 +48,12 @@ class NodeTest < Minitest::Test
   def test_check_letters_for_links
     node.insert_node("bear")
     node.walk("ehr")
-    
+    # binding.pry
     suffixs = []
     letters = []
     result = node.links["e"].check_letters_for_links(suffixs, letters)
-    
-    assert_equal ["ar"], result
+
+    assert_equal ["ar", "hr"], result
   end
 
   def test_it_finds_link_at_certain_letter
@@ -82,6 +82,13 @@ class NodeTest < Minitest::Test
     result = node.has_links?
 
     assert_equal true, result
+  end
+
+  def test_passing_to_correct_method
+    node.insert_node("aa")
+    result = node.walk("act")
+
+    assert_equal ["c"], result = node.links["a"].links.keys
   end
 
 end

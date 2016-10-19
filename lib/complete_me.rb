@@ -54,7 +54,14 @@ class Trie
   end
 
   def suggest(stem)
-    walk(stem)
-      # return suggest's array
+    # binding.pry
+    beginning = stem.dup
+    suffixs = base_node.suggestion_walk(stem)
+    suggestions = suffixs.map do |suffix|
+      # binding.pry
+      beginning + suffix
+    end
+    suggestions
+    #will be array of arrays, sort by second element, don't display second element
   end
 end
