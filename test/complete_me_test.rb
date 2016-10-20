@@ -20,6 +20,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_insert_word
+    skip
     trie.insert("pizza")
 
     assert_equal 1, trie.count
@@ -27,7 +28,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_inserts_two_different_words_begining_different_letter
-
+    skip
     trie.insert("catty")
     trie.insert("pizza")
 
@@ -36,6 +37,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_inserts_three_different_words_begining_different_letter
+    skip
     trie.insert("catty")
     trie.insert("pizza")
     trie.insert("horse")
@@ -45,7 +47,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_insert_a_second_item
-  
+    skip
     trie.insert("pizza")
     trie.insert("pizzeria")
 
@@ -55,10 +57,11 @@ class CompleteMeTest < Minitest::Test
 
   def test_it_counts_numbers_of_words
     skip
-    trie.populate('./test/words_1')
+
+    trie.populate("pizza\ncat\ndog")
     result = trie.count
 
-    assert_equal 5, result
+    assert_equal 3, result
   end
 
   def test_base_node_begins_with_no_links
@@ -80,13 +83,6 @@ class CompleteMeTest < Minitest::Test
     assert_equal ["p"], trie.base_node.links.keys
   end
 
-  def test_pull_first_letter_word_method
-    skip
-    result = trie.pull_first_letter("pizza")
-
-    assert_equal "p", result
-  end
-
   def test_nodes_link_to_base_calls_nodes_link_to_base
     skip
     trie.insert("pizza")
@@ -103,7 +99,7 @@ class CompleteMeTest < Minitest::Test
 
   def test_it_populates_multiple_words
     skip
-    trie.populate("./test/words_1")
+    trie.populate_from_file("./test/words_1")
     # binding.pry
     assert_equal ["a", "b"], trie.base_node.links.keys
   end
@@ -152,15 +148,26 @@ class CompleteMeTest < Minitest::Test
     skip
     trie.insert("be")
     result = trie.suggest("b")
+
+    # binding.pry
     assert_equal ["be"], result
   end
 
+  def test_insert_is_correct
+    trie.insert("be")
+    trie.insert("any")
+    trie.insert("beer")
+    trie.insert("bear")
+
+    result = trie.base_node.links.keys
+    assert_equal ["b", "a"], result
+  end
+
   def test_it_returns_words_with_suggest
-    skip
-    trie.populate("./test/words")
-
+    # skip
+    trie.populate("aa\naardvark\nanimal\nantique\nbear\npizza\npizzeria\ntrunk\nfabulous\nutensil\npizzaz\nannie\nante\nant\npizzle\nbeer\nbegin\nbe")
     result = trie.suggest("be")
-
+    # binding.pry
     assert_equal ["be", "bear", "beer", "begin"], result.sort
   end
 
@@ -170,5 +177,48 @@ class CompleteMeTest < Minitest::Test
     result = trie.suggest("a")
     assert_equal ["aardvark"], result
   end
+
+  def test_it_can_add_selection_to_selection_dictionary
+
+   trie.insert("pizza")
+   trie.insert("pizzeria")
+   trie.select("piz", "pizzeria")
+   result = trie.selection_dictionary
+
+   assert_equal ({"piz" => [["pizzeria", 1]]}), result
+ end
+
+ def test_it_adds_to_counter_when_selection_is_called_again
+   # skip
+   trie.insert("pizza")
+   trie.insert("pizzeria")
+   trie.insert("pizzicato")
+   trie.select("piz", "pizzeria")
+   trie.select("piz", "pizzeria")
+   result = trie.selection_dictionary["piz"][0][1]
+
+   assert_equal 2, result
+ end
+
+ def test_it_can_add_selection_when_stem_is_already_there
+   trie.insert("pizza")
+   trie.insert("pizzeria")
+   trie.insert("pizzicato")
+   trie.select("piz", "pizzeria")
+   trie.select("piz", "pizzicato")
+   result = trie.selection_dictionary["piz"]
+
+   assert_equal [["pizzeria", 1], ["pizzicato", 1]], result
+ end
+
+ def test_it_puts_selection_first_when_suggesting
+   trie.insert("pizza")
+   trie.insert("pizzeria")
+   trie.insert("pizzaz")
+   trie.select("piz", "pizzeria")
+   result = trie.suggest("piz")
+
+   assert_equal ["pizzeria", "pizza", "pizzaz"], result
+ end
 
 end

@@ -21,22 +21,23 @@ class NodeTest < Minitest::Test
   end
 
   def test_it_has_links
-    node.insert_node("pizza")
+    node.declare("pizza")
     assert_equal ["i"], node.links.keys
   end
 
-  def test_it_deletes_first_words
-    result = node.delete_letter("pizza")
-    assert_equal "izza", result
+  def test_declares_words
+    result = node.declare("pizza")
+    assert_equal "pizza", result
   end
 
   def test_word_walks_down_tree
-    skip
-    node.insert_node("pizza")
-    node.insert_node("pp")
-    result = node.walk("izzeria")
+    node.declare("pizza")
+    node.declare("pizzaz")
+    node.walk(["p", "i", "z", "z", "a", "z"], 2)
+    result =  node.links.keys
 
-    assert_equal true, result
+    assert_equal ["i"], result
+
   end
 
   def test_it_can_return_a_word
@@ -56,13 +57,6 @@ class NodeTest < Minitest::Test
     assert_equal ["ar", "hr"], result
   end
 
-  def test_it_finds_link_at_certain_letter
-    node.insert_node("pizza")
-    result = node.link_at_first_letter_of("izza").links.keys
-
-    assert_equal ["z"], result
-  end
-
   def test_it_assigns_new_links_when_told
     node.assign_new_link_at_first_letter_of("pizza")
     result = node.link_at_first_letter_of("pizza").links.keys
@@ -71,24 +65,10 @@ class NodeTest < Minitest::Test
   end
 
   def test_ending_words
-    node.end_word
-
+    node.end_word(["c", "a", "t"])
+    assert_equal "cat", node.word
     assert_equal true, node.terminator
   end
 
-  def test_a_node_has_links
-    # skip
-    node.assign_new_link_at_first_letter_of("sam")
-    result = node.has_links?
-
-    assert_equal true, result
-  end
-
-  def test_passing_to_correct_method
-    node.insert_node("aa")
-    result = node.walk("act")
-
-    assert_equal ["c"], result = node.links["a"].links.keys
-  end
 
 end
