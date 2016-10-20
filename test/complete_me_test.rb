@@ -69,12 +69,12 @@ class CompleteMeTest < Minitest::Test
   end
   
   def test_read_file_method
-    result = trie.read_file('words_1')
+    result = trie.read_file('./test/words_1')
     assert_equal ["aa", "aardvark", "animal", "antique", "bear"], result
   end
 
   def test_it_populates_multiple_words
-    trie.populate_from_file("words_1")
+    trie.populate_from_file("./test/words_1")
     
     assert_equal ["a", "b"], trie.base_node.links.keys
   end
