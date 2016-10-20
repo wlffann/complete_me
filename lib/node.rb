@@ -1,9 +1,8 @@
 require 'pry'
 class Node
-  attr_reader :links, :terminator, :word
+  attr_reader :links, :word
   def initialize
     @links = {}
-    @terminator = false
     @word = ""
   end
 
@@ -36,7 +35,6 @@ class Node
   end
 
   def end_word(word_split)
-    @terminator = true
     @word = word_split.join
   end
 
@@ -60,8 +58,7 @@ class Node
     index = 0
     self.suggestion_walk(stem_split, index)
   end
-
-## suggest section
+  
   def suggestion_walk(stem_split, index)
     current = self.links[stem_split[index]]
     if stem_split[index + 1]
@@ -75,7 +72,7 @@ class Node
   def return_words_at_terminator(suggestions)
     available_letters = self.links.keys
     available_letters.each do |letter|
-      if self.terminator == true && self.links[letter].has_links?
+      if self.word != "" && self.links[letter].has_links?
         suggestions << self.word
         self.links[letter].return_words_at_terminator(suggestions)
       elsif self.links[letter].has_links?

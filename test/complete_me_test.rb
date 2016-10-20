@@ -100,11 +100,9 @@ class CompleteMeTest < Minitest::Test
   def test_it_populates_multiple_words
     skip
     trie.populate_from_file("./test/words_1")
-    # binding.pry
+    
     assert_equal ["a", "b"], trie.base_node.links.keys
   end
-
-  #testing node behavior through trie
 
   def test_it_can_walk_even_with_double_letters
     skip
@@ -129,7 +127,7 @@ class CompleteMeTest < Minitest::Test
     trie.insert("aa")
     trie.insert("aardvark")
     result = trie.base_node.links["a"].links.keys
-    # binding.pry
+    
     assert_equal ["a"], result
   end
 
@@ -140,7 +138,7 @@ class CompleteMeTest < Minitest::Test
     trie.insert("any")
     trie.insert("animal")
     result = trie.base_node.links["a"].links.keys
-    # binding.pry
+
     assert_equal ["a", "n"], result
   end
 
@@ -149,7 +147,6 @@ class CompleteMeTest < Minitest::Test
     trie.insert("be")
     result = trie.suggest("b")
 
-    # binding.pry
     assert_equal ["be"], result
   end
 
@@ -167,12 +164,12 @@ class CompleteMeTest < Minitest::Test
     # skip
     trie.populate("aa\naardvark\nanimal\nantique\nbear\npizza\npizzeria\ntrunk\nfabulous\nutensil\npizzaz\nannie\nante\nant\npizzle\nbeer\nbegin\nbe")
     result = trie.suggest("be")
-    # binding.pry
+    
     assert_equal ["be", "bear", "beer", "begin"], result.sort
   end
 
   def test_suggest_works_on_double_first_letter
-    skip
+    # skip
     trie.insert("aardvark")
     result = trie.suggest("a")
     assert_equal ["aardvark"], result
@@ -180,12 +177,12 @@ class CompleteMeTest < Minitest::Test
 
   def test_it_can_add_selection_to_selection_dictionary
 
-   trie.insert("pizza")
-   trie.insert("pizzeria")
-   trie.select("piz", "pizzeria")
-   result = trie.selection_dictionary
+  trie.insert("pizza")
+  trie.insert("pizzeria")
+  trie.select("piz", "pizzeria")
+  result = trie.selection_dictionary
 
-   assert_equal ({"piz" => [["pizzeria", 1]]}), result
+  assert_equal ({"piz" => [["pizzeria", 1]]}), result
  end
 
  def test_it_adds_to_counter_when_selection_is_called_again
@@ -212,13 +209,29 @@ class CompleteMeTest < Minitest::Test
  end
 
  def test_it_puts_selection_first_when_suggesting
-   trie.insert("pizza")
-   trie.insert("pizzeria")
-   trie.insert("pizzaz")
-   trie.select("piz", "pizzeria")
-   result = trie.suggest("piz")
+  skip
+  trie.insert("pizza")
+  trie.insert("pizzeria")
+  trie.insert("pizzaz")
+  trie.select("piz", "pizzeria")
+  result = trie.suggest("piz")
 
-   assert_equal ["pizzeria", "pizza", "pizzaz"], result
+  assert_equal ["pizzeria", "pizza", "pizzaz"], result
+ end
+
+ def test_selction_works_with_small_dataset
+  trie.insert("pizza")
+  trie.insert("aardvark")
+  trie.insert("zombies")
+  trie.insert("a")
+  trie.insert("xylophones")
+
+  assert_equal ["pizza"], trie.suggest("p")
+  assert_equal ["pizza"], trie.suggest("piz")
+  assert_equal ["zombies"], trie.suggest("zom")
+  assert_equal ["a", "aardvark"], trie.suggest("a")
+  assert_equal ["aardvark"], trie.suggest("aa")
+  
  end
 
 end

@@ -43,8 +43,8 @@ class Trie
   end
 
   def suggest(stem)
-    suggestions = base_node.suggest_declare(stem)
-    selections = pull_only_words
+    suggestions = base_node.suggest_declare(stem).sort
+    selections = pull_only_words(stem)
     selections | suggestions
   end
 
