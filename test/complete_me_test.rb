@@ -6,7 +6,7 @@ end
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'pry'
-require './lib/complete_me'
+require_relative '../lib/complete_me'
 
 class CompleteMeTest < Minitest::Test
   attr_reader :trie
@@ -69,12 +69,12 @@ class CompleteMeTest < Minitest::Test
   end
   
   def test_read_file_method
-    result = trie.read_file('./test/words_1')
+    result = trie.read_file('words_1')
     assert_equal ["aa", "aardvark", "animal", "antique", "bear"], result
   end
 
   def test_it_populates_multiple_words
-    trie.populate_from_file("./test/words_1")
+    trie.populate_from_file("words_1")
     
     assert_equal ["a", "b"], trie.base_node.links.keys
   end
@@ -131,6 +131,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_returns_words_with_suggest
+    # trie.populate(File.read('./test/words'))
     trie.populate("aa\naardvark\nanimal\nantique\nbear\npizza\npizzeria\ntrunk\nfabulous\nutensil\npizzaz\nannie\nante\nant\npizzle\nbeer\nbegin\nbe")
     result = trie.suggest("be")
 

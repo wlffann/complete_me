@@ -22,7 +22,7 @@ class NodeTest < Minitest::Test
 
   def test_it_has_links
     node.declare("pizza")
-    assert_equal ["i"], node.links.keys
+    assert_equal ["p"], node.links.keys
   end
 
   def test_declares_words
@@ -33,33 +33,24 @@ class NodeTest < Minitest::Test
   def test_word_walks_down_tree
     node.declare("pizza")
     node.declare("pizzaz")
-    node.walk(["p", "i", "z", "z", "a", "z"], 2)
-    result =  node.links.keys
+    node.walk(["p", "i", "z", "z", "a", "z"], 0)
+    result =  node.links["p"].links.keys
 
     assert_equal ["i"], result
 
   end
 
-  def test_it_can_return_a_word
-    skip
-    result = node.collect_words("iz")
-    assert_equals ["izza", "izzeria"], result
-  end
+  def test_it_can_return_words
+    node.insert_node("bear".chars, 0)
+    node.walk("beer".chars, 0)
+    result = node.links["b"].return_words_at_terminator(suggestions = [])
 
-  def test_check_letters_for_links
-    node.insert_node("bear")
-    node.walk("ehr")
-    # binding.pry
-    suffixs = []
-    letters = []
-    result = node.links["e"].check_letters_for_links(suffixs, letters)
-
-    assert_equal ["ar", "hr"], result
+    assert_equal ["bear", "beer"], result
   end
 
   def test_it_assigns_new_links_when_told
-    node.assign_new_link_at_first_letter_of("pizza")
-    result = node.link_at_first_letter_of("pizza").links.keys
+    node.assign_new_link_at_current(["p", "i", "z", "z", "a"], 0)
+    result = node.links["p"].links.keys
 
     assert_equal ["i"], result
   end

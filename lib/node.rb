@@ -1,4 +1,5 @@
 require 'pry'
+
 class Node
   attr_reader :links, :terminator, :word
   def initialize
@@ -14,7 +15,7 @@ class Node
   end
 
   def walk_or_insert(word_split, index)
-    if self.links[word_split[index]] == nil
+    if self.links[word_split[index]].nil?
       assign_new_link_at_current(word_split, index)
     else
       self.walk(word_split, index)
@@ -42,9 +43,10 @@ class Node
 
   def walk(word_split, index)
     current = self.links[word_split[index]]
-    if current.links[word_split[index + 1]] == nil
-      current.links[word_split[index + 1]] = Node.new
-      current.links[word_split[index + 1]].insert_node(word_split, index + 2)
+    next_letter = word_split[index + 1]
+    if current.links[next_letter] == nil
+      current.links[next_letter] = Node.new
+      current.links[next_letter].insert_node(word_split, index + 2)
     else
       current.walk(word_split, index + 1)
     end
@@ -75,6 +77,7 @@ class Node
     available_letters.each do |letter|
       if self.word != "" && self.links != ({})
         suggestions << self.word
+        check_for_last_letter(letter, suggestions)
         self.links[letter].return_words_at_terminator(suggestions)
       elsif self.links[letter].has_links?
         self.links[letter].return_words_at_terminator(suggestions)
@@ -83,6 +86,12 @@ class Node
       end
     end
     suggestions
+  end
+
+  def check_for_last_letter(letter, suggestions)
+    if self.links[letter].links ==({})
+      suggestions << self.links[letter].word 
+    end
   end
 
 end
