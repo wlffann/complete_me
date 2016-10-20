@@ -60,7 +60,6 @@ class Node
     self.suggestion_walk(stem_split, index)
   end
 
-## suggest section
   def suggestion_walk(stem_split, index)
     current = self.links[stem_split[index]]
     if stem_split[index + 1]
@@ -75,7 +74,6 @@ class Node
     available_letters = self.links.keys
     available_letters.each do |letter|
       if self.word != "" && self.links != ({})
-        binding.pry
         suggestions << self.word
         self.links[letter].return_words_at_terminator(suggestions)
       elsif self.links[letter].has_links?

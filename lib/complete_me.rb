@@ -1,6 +1,6 @@
 require './lib/node'
 
-class Trie
+class CompleteMe
   attr_reader :base_node,
               :count,
               :selection_dictionary
