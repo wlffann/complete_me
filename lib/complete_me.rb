@@ -11,14 +11,13 @@ class Trie
 
   def insert(word)
     if base_node.has_links? && base_node.links[pull_first_letter(word)] != nil
-      # binding.pry
       base_node.walk(word)
     elsif base_node.has_links?
       create_node_at_letter_link(word)
-      nodes_link_to_base.last.insert_node(word)
+      nodes_link_to_base.last.declare(word)
     else
       create_node_at_letter_link(word)
-      nodes_link_to_base.first.insert_node(word)
+      nodes_link_to_base.first.declare(word)
     end
     @count += 1
   end
@@ -54,14 +53,11 @@ class Trie
   end
 
   def suggest(stem)
-    # binding.pry
     beginning = stem.dup
     suffixs = base_node.suggestion_walk(stem)
     suggestions = suffixs.map do |suffix|
-      # binding.pry
       beginning + suffix
     end
     suggestions
-    #will be array of arrays, sort by second element, don't display second element
   end
 end

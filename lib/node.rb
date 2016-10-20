@@ -4,14 +4,21 @@ class Node
   def initialize
     @links = {}
     @terminator = false
+    @word = ""
   end
 
-  def insert_node(word)
-    word = delete_letter(word)
-    if empty?(word)
-      end_word
+  def declare(word)
+    word_split = word.chars
+    index = 1
+    self.insert_node(word_split, index)
+  end
+
+  def insert_node(word_split, index)
+    letter = word_split[index]
+    if self.links[letter] == nil
+      end_word(word_split)
     else
-      assign_new_link_at_first_letter_of(word)
+      assign_new_link_at_current(letter, index)
     end
   end
 
@@ -19,20 +26,19 @@ class Node
     word == ""
   end
 
-  def assign_new_link_at_first_letter_of(word)
-    # binding.pry
-    links[pull_first_letter(word)] = Node.new
-    links[pull_first_letter(word)].insert_node(word)
+  def assign_new_link_at_current(letter, index)
+    links[index] = Node.new
+    links[index].insert_node(word_split, index += 1)
   end
 
   def assign_new_link_at_lower_level(word)
-    # binding.pry
     link_corresponding_to_first_lettter = self.links[pull_first_letter(word)]
     self.links[pull_first_letter(word)].assign_new_link_at_first_letter_of(word)
   end
 
-  def end_word
+  def end_word(word_split)
     @terminator = true
+    @word = word_split.join
   end
 
   def walk(word)
@@ -52,10 +58,6 @@ class Node
 
   def has_links?
     links != ({})
-  end
-
-  def link_at_first_letter_of(word)
-    links[pull_first_letter(word)]
   end
 
   def pass_word_to_next_method(word, saved)
@@ -98,15 +100,6 @@ class Node
       letters = []
     end
     suffixs
-  end
-
-  def delete_letter(word)
-    word[0] = ""
-    word
-  end
-
-  def pull_first_letter(word)
-    word.chars.first
   end
 
 end

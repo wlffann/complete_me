@@ -20,7 +20,6 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_insert_word
-    skip
     trie.insert("pizza")
 
     assert_equal 1, trie.count
@@ -28,7 +27,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_inserts_two_different_words_begining_different_letter
-    skip
+
     trie.insert("catty")
     trie.insert("pizza")
 
@@ -37,7 +36,6 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_inserts_three_different_words_begining_different_letter
-    skip
     trie.insert("catty")
     trie.insert("pizza")
     trie.insert("horse")
@@ -47,7 +45,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_insert_a_second_item
-    skip
+  
     trie.insert("pizza")
     trie.insert("pizzeria")
 
@@ -151,14 +149,14 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_suggested_stem_is_not_word
-
+    skip
     trie.insert("be")
     result = trie.suggest("b")
     assert_equal ["be"], result
   end
 
   def test_it_returns_words_with_suggest
-
+    skip
     trie.populate("./test/words")
 
     result = trie.suggest("be")
@@ -167,6 +165,7 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_suggest_works_on_double_first_letter
+    skip
     trie.insert("aardvark")
     result = trie.suggest("a")
     assert_equal ["aardvark"], result
