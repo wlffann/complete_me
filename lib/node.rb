@@ -42,13 +42,12 @@ class Node
 
   def walk(word_split, index)
     current = self.links[word_split[index]]
-      if current.links[word_split[index + 1]] == nil
-        current.links[word_split[index + 1]] = Node.new
-        current.links[word_split[index + 1]].insert_node(word_split, index + 2)
-      else
-        current.walk(word_split, index + 1)
+    if current.links[word_split[index + 1]] == nil
+      current.links[word_split[index + 1]] = Node.new
+      current.links[word_split[index + 1]].insert_node(word_split, index + 2)
+    else
+      current.walk(word_split, index + 1)
     end
-
   end
 
   def has_links?
@@ -75,7 +74,8 @@ class Node
   def return_words_at_terminator(suggestions)
     available_letters = self.links.keys
     available_letters.each do |letter|
-      if self.terminator == true && self.links[letter].has_links?
+      if self.word != "" && self.links != ({})
+        binding.pry
         suggestions << self.word
         self.links[letter].return_words_at_terminator(suggestions)
       elsif self.links[letter].has_links?

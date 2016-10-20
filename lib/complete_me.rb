@@ -44,8 +44,20 @@ class Trie
 
   def suggest(stem)
     suggestions = base_node.suggest_declare(stem)
-    suggestions
+    selections = pull_words_only(stem)
+    suggestions = selections | suggestions
   end
+
+  def pull_words_only(stem)
+    if selection_dictionary[stem]
+      selection_dictionary[stem].map do |letter, weight|
+        letter
+      end
+    else 
+      []
+    end
+  end
+
 
   def select(stem, word)
     if selection_dictionary[stem]

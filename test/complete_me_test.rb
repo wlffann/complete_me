@@ -100,11 +100,9 @@ class CompleteMeTest < Minitest::Test
   def test_it_populates_multiple_words
     skip
     trie.populate_from_file("./test/words_1")
-    # binding.pry
+    
     assert_equal ["a", "b"], trie.base_node.links.keys
   end
-
-  #testing node behavior through trie
 
   def test_it_can_walk_even_with_double_letters
     skip
@@ -129,31 +127,31 @@ class CompleteMeTest < Minitest::Test
     trie.insert("aa")
     trie.insert("aardvark")
     result = trie.base_node.links["a"].links.keys
-    # binding.pry
+    
     assert_equal ["a"], result
   end
 
    def test_it_can_walk_into_correct_node
-     skip
+    skip
     trie.insert("aa")
     trie.insert("aardvark")
     trie.insert("any")
     trie.insert("animal")
     result = trie.base_node.links["a"].links.keys
-    # binding.pry
+    
     assert_equal ["a", "n"], result
   end
 
   def test_suggested_stem_is_not_word
-    skip
+    # skip
     trie.insert("be")
     result = trie.suggest("b")
 
-    # binding.pry
     assert_equal ["be"], result
   end
 
   def test_insert_is_correct
+    skip
     trie.insert("be")
     trie.insert("any")
     trie.insert("beer")
@@ -164,15 +162,15 @@ class CompleteMeTest < Minitest::Test
   end
 
   def test_it_returns_words_with_suggest
-    # skip
+    skip
     trie.populate("aa\naardvark\nanimal\nantique\nbear\npizza\npizzeria\ntrunk\nfabulous\nutensil\npizzaz\nannie\nante\nant\npizzle\nbeer\nbegin\nbe")
     result = trie.suggest("be")
-    # binding.pry
+
     assert_equal ["be", "bear", "beer", "begin"], result.sort
   end
 
   def test_suggest_works_on_double_first_letter
-    skip
+    # skip
     trie.insert("aardvark")
     result = trie.suggest("a")
     assert_equal ["aardvark"], result
@@ -189,7 +187,7 @@ class CompleteMeTest < Minitest::Test
  end
 
  def test_it_adds_to_counter_when_selection_is_called_again
-   # skip
+   skip
    trie.insert("pizza")
    trie.insert("pizzeria")
    trie.insert("pizzicato")
@@ -201,24 +199,25 @@ class CompleteMeTest < Minitest::Test
  end
 
  def test_it_can_add_selection_when_stem_is_already_there
-   trie.insert("pizza")
-   trie.insert("pizzeria")
-   trie.insert("pizzicato")
-   trie.select("piz", "pizzeria")
-   trie.select("piz", "pizzicato")
-   result = trie.selection_dictionary["piz"]
+  # skip
+  trie.insert("pizza")
+  trie.insert("pizzeria")
+  trie.insert("pizzicato")
+  trie.select("piz", "pizzeria")
+  trie.select("piz", "pizzicato")
+  result = trie.selection_dictionary["piz"]
 
-   assert_equal [["pizzeria", 1], ["pizzicato", 1]], result
+  assert_equal [["pizzeria", 1], ["pizzicato", 1]], result
  end
 
  def test_it_puts_selection_first_when_suggesting
-   trie.insert("pizza")
-   trie.insert("pizzeria")
-   trie.insert("pizzaz")
-   trie.select("piz", "pizzeria")
-   result = trie.suggest("piz")
-
-   assert_equal ["pizzeria", "pizza", "pizzaz"], result
+  trie.insert("pizza")
+  trie.insert("pizzeria")
+  trie.insert("pizzaz")
+  trie.select("piz", "pizzeria")
+  result = trie.suggest("piz")
+  
+  assert_equal ["pizzeria", "pizza", "pizzaz"], result
  end
 
 end
